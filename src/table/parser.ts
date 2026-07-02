@@ -1,4 +1,5 @@
 import type { Alignment, CellPosition, MarkdownTable } from "../types";
+import { normalizeFormulaText } from "../formula/parser";
 
 const ALIGNMENT_RE = /^:?-{3,}:?$/;
 
@@ -116,7 +117,7 @@ export function formatMarkdownTable(table: MarkdownTable): string {
   });
 
   const formatRow = (row: string[]) => {
-    const cells = row.map((cell, col) => ` ${padCell(cell, widths[col], table.alignments[col])} `);
+    const cells = row.map((cell, col) => ` ${padCell(normalizeFormulaText(cell), widths[col], table.alignments[col])} `);
     return `|${cells.join("|")}|`;
   };
 

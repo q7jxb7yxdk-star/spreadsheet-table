@@ -28,10 +28,6 @@ export default class SpreadsheetTablePlugin extends Plugin {
     this.registerDomEvent(document, "keydown", (event) => this.handleTableNavigation(event));
   }
 
-  onunload(): void {
-    this.app.workspace.detachLeavesOfType(SPREADSHEET_TOOLBAR_VIEW);
-  }
-
   async loadSettings(): Promise<void> {
     const loaded = ((await this.loadData()) ?? {}) as Partial<SpreadsheetTableSettings> & { showCellLabelsInLivePreview?: boolean };
     this.settings = Object.assign({}, DEFAULT_SETTINGS, loaded);

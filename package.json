@@ -1,6 +1,6 @@
 {
   "name": "spreadsheet-table",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Spreadsheet-style Markdown tables for Obsidian.",
   "main": "main.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "table",
     "spreadsheet"
   ],
-  "author": "",
+  "author": "Sunny Yu",
   "license": "MIT",
   "devDependencies": {
     "@codemirror/state": "6.5.0",

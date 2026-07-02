@@ -54,6 +54,46 @@ export function parseFormulaExpression(source: string): AstNode {
   return parser.parse();
 }
 
+export function normalizeFormulaText(source: string): string {
+  const formulaStart = source.search(/\S/);
+  if (formulaStart < 0 || source[formulaStart] !== "=") return source;
+
+  let result = source.slice(0, formulaStart + 1);
+  let index = formulaStart + 1;
+
+  while (index < source.length) {
+    const char = source[index];
+
+    if (char === '"' || char === "'") {
+      const quoted = readQuotedString(source, index);
+      result += quoted.value;
+      index = quoted.end;
+      continue;
+    }
+
+    const rest = source.slice(index);
+    const reference = /^[A-Za-z]+[1-9][0-9]*/.exec(rest);
+    if (reference) {
+      result += reference[0].toUpperCase();
+      index += reference[0].length;
+      continue;
+    }
+
+    const identifier = /^[A-Za-z_][A-Za-z0-9_]*/.exec(rest);
+    if (identifier) {
+      const value = identifier[0];
+      result += shouldUppercaseIdentifier(source, index + value.length, result) ? value.toUpperCase() : value;
+      index += value.length;
+      continue;
+    }
+
+    result += char;
+    index++;
+  }
+
+  return result;
+}
+
 export function tokenize(source: string): Token[] {
   const tokens: Token[] = [];
   let index = 0;
@@ -130,6 +170,43 @@ export function tokenize(source: string): Token[] {
 
   tokens.push({ type: "eof", value: "" });
   return tokens;
+}
+
+function readQuotedString(source: string, start: number): { value: string; end: number } {
+  const quote = source[start];
+  let index = start + 1;
+  while (index < source.length) {
+    if (source[index] === "\\") {
+      index += 2;
+      continue;
+    }
+    if (source[index] === quote) {
+      index++;
+      break;
+    }
+    index++;
+  }
+  return { value: source.slice(start, index), end: index };
+}
+
+function shouldUppercaseIdentifier(source: string, nextIndex: number, currentResult: string): boolean {
+  const next = nextNonWhitespace(source, nextIndex);
+  if (next === "(" || next === ":") return true;
+  return previousNonWhitespace(currentResult) === ":";
+}
+
+function nextNonWhitespace(source: string, start: number): string | null {
+  for (let index = start; index < source.length; index++) {
+    if (!/\s/.test(source[index])) return source[index];
+  }
+  return null;
+}
+
+function previousNonWhitespace(source: string): string | null {
+  for (let index = source.length - 1; index >= 0; index--) {
+    if (!/\s/.test(source[index])) return source[index];
+  }
+  return null;
 }
 
 class FormulaParser {

@@ -41,6 +41,13 @@ Supported functions:
 
 Function names are case-insensitive.
 
+Table formatting standardizes formula references and function names to uppercase:
+
+```text
+=a2*b2 -> =A2*B2
+=Average(B2:B10) -> =AVERAGE(B2:B10)
+```
+
 Range arithmetic is supported:
 
 ```text
@@ -74,7 +81,3 @@ Date results are displayed as `YYYY-MM-DD`.
 ## Rendering
 
 Live Preview and Reading Mode can show formula results while the Markdown source remains unchanged. Live Preview can also show Excel-style column letters and row numbers. These behaviors can be changed in plugin settings.
-
-## Clean-Room Notice
-
-Spreadsheet Table is a clean-room rewrite. It does not use, copy, rewrite, or depend on source code from Table Calc, Advanced Tables, CalcCraft, or older Table Calc implementations.

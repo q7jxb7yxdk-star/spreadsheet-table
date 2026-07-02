@@ -33,7 +33,7 @@ const ACTIONS: ToolbarAction[] = [
   { icon: "table", label: "Format table", scope: "cell", run: (plugin) => runWithEditor(plugin, "cell", formatActiveTable) },
   { icon: "panel-top-open", label: "Insert 1 row above", scope: "row", run: (plugin) => runWithEditor(plugin, "row", insertActiveRowAbove) },
   { icon: "panel-bottom-open", label: "Insert 1 row below", scope: "row", run: (plugin) => runWithEditor(plugin, "row", insertActiveRowBelow) },
-  { icon: "list-minus", label: "Delete row", scope: "row", run: (plugin) => runWithEditor(plugin, "row", deleteActiveRow) },
+  { icon: "rows-3", label: "Delete row", scope: "row", run: (plugin) => runWithEditor(plugin, "row", deleteActiveRow) },
   { icon: "panel-left-open", label: "Insert 1 column to the left", scope: "column", run: (plugin) => runWithEditor(plugin, "column", insertActiveColumnLeft) },
   { icon: "panel-right-open", label: "Insert 1 column to the right", scope: "column", run: (plugin) => runWithEditor(plugin, "column", insertActiveColumnRight) },
   { icon: "columns-3", label: "Delete column", scope: "column", run: (plugin) => runWithEditor(plugin, "column", deleteActiveColumn) },
@@ -44,15 +44,15 @@ const ACTIONS: ToolbarAction[] = [
   { icon: "align-left", label: "Align left", scope: "column", run: (plugin) => runWithEditor(plugin, "column", (editor) => alignActiveColumn(editor, "left")) },
   { icon: "align-center", label: "Align center", scope: "column", run: (plugin) => runWithEditor(plugin, "column", (editor) => alignActiveColumn(editor, "center")) },
   { icon: "align-right", label: "Align right", scope: "column", run: (plugin) => runWithEditor(plugin, "column", (editor) => alignActiveColumn(editor, "right")) },
-  { icon: "arrow-up-a-z", label: "Sort ascending", scope: "column", run: (plugin) => runWithEditor(plugin, "column", (editor) => sortActiveColumn(editor, "asc")) },
-  { icon: "arrow-down-z-a", label: "Sort descending", scope: "column", run: (plugin) => runWithEditor(plugin, "column", (editor) => sortActiveColumn(editor, "desc")) },
+  { icon: "list-sort-ascending", label: "Sort ascending", scope: "column", run: (plugin) => runWithEditor(plugin, "column", (editor) => sortActiveColumn(editor, "asc")) },
+  { icon: "list-sort-descending", label: "Sort descending", scope: "column", run: (plugin) => runWithEditor(plugin, "column", (editor) => sortActiveColumn(editor, "desc")) },
   { icon: "download", label: "Export CSV", scope: "cell", run: (plugin) => runWithEditor(plugin, "cell", exportActiveTableToCsv) },
   {
     icon: "circle-help",
     label: "Help",
     scope: "none",
     run: () => {
-      window.open("https://github.com/sunnyyu/spreadsheet-table/blob/main/README.md");
+      window.open("https://github.com/q7jxb7yxdk-star/spreadsheet-table/blob/main/README.md");
     }
   }
 ];

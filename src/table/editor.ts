@@ -1,5 +1,6 @@
 import { MarkdownView, Notice, type Editor } from "obsidian";
 import type { Alignment, MarkdownTable } from "../types";
+import { normalizeFormulaText } from "../formula/parser";
 import { tableToCsv } from "./csv";
 import { addColumn, deleteColumn, deleteRow, formatTable, insertRowAt, moveColumn, moveRow, setAlignment, sortByColumn } from "./format";
 import { findTableAtLine, getCellPositionFromLine } from "./parser";
@@ -191,6 +192,27 @@ export function navigateTableCell(editor: Editor, direction: 1 | -1 | "down"): b
   return true;
 }
 
+export function normalizeActiveFormulaCell(editor: Editor): boolean {
+  const table = getActiveTable(editor);
+  if (!table) return false;
+
+  const cursor = editor.getCursor();
+  const position = getCellPositionFromLine(table, cursor.line, cursor.ch);
+  if (!position) return false;
+
+  const line = editor.getLine(cursor.line);
+  const range = findCellContentRange(line, position.col);
+  if (!range) return false;
+
+  const cellText = line.slice(range.from, range.to);
+  const normalized = normalizeFormulaText(cellText);
+  if (normalized === cellText) return false;
+
+  editor.replaceRange(normalized, { line: cursor.line, ch: range.from }, { line: cursor.line, ch: range.to });
+  editor.setCursor({ line: cursor.line, ch: Math.min(cursor.ch, line.length - cellText.length + normalized.length) });
+  return true;
+}
+
 function findCellStart(line: string, col: number): number {
   let seen = -1;
   for (let index = 0; index < line.length; index++) {
@@ -200,6 +222,38 @@ function findCellStart(line: string, col: number): number {
     }
   }
   return line.length;
+}
+
+function findCellContentRange(line: string, col: number): { from: number; to: number } | null {
+  let start = line.startsWith("|") ? 1 : 0;
+  let currentCol = 0;
+  let escaped = false;
+
+  for (let index = start; index < line.length; index++) {
+    const char = line[index];
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+    if (char === "\\") {
+      escaped = true;
+      continue;
+    }
+    if (char === "|") {
+      if (currentCol === col) return trimCellRange(line, start, index);
+      currentCol++;
+      start = index + 1;
+    }
+  }
+
+  if (currentCol === col) return trimCellRange(line, start, line.length);
+  return null;
+}
+
+function trimCellRange(line: string, from: number, to: number): { from: number; to: number } {
+  while (from < to && /\s/.test(line[from])) from++;
+  while (to > from && /\s/.test(line[to - 1])) to--;
+  return { from, to };
 }
 
 function bodyRowIndexFromTablePosition(tableLocalRow: number): number {

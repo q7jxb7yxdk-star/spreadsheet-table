@@ -1,11 +1,10 @@
 {
   "id": "spreadsheet-table",
   "name": "Spreadsheet Table",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "minAppVersion": "1.5.0",
   "description": "Spreadsheet-style editing, formulas, and rendering for Markdown tables.",
-  "author": "",
-  "authorUrl": "",
-  "fundingUrl": "",
+  "author": "Sunny Yu",
+  "authorUrl": "https://github.com/q7jxb7yxdk-star",
   "isDesktopOnly": false
 }

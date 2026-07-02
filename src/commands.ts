@@ -50,7 +50,7 @@ export function registerSpreadsheetCommands(plugin: SpreadsheetTablePlugin): voi
     id: "open-help",
     name: "Open Spreadsheet Table help",
     callback: () => {
-      window.open("https://github.com/sunnyyu/spreadsheet-table/blob/main/README.md");
+      window.open("https://github.com/q7jxb7yxdk-star/spreadsheet-table/blob/main/README.md");
     }
   });
 }
