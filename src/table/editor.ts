@@ -158,8 +158,8 @@ export async function exportActiveTableToCsv(editor: Editor): Promise<boolean> {
     return false;
   }
 
-  await navigator.clipboard.writeText(tableToCsv(table));
-  new Notice("Table CSV copied to clipboard.");
+  downloadTextFile("spreadsheet-table.csv", tableToCsv(table), "text/csv;charset=utf-8");
+  new Notice("Table CSV downloaded.");
   return true;
 }
 
@@ -254,6 +254,19 @@ function trimCellRange(line: string, from: number, to: number): { from: number; 
   while (from < to && /\s/.test(line[from])) from++;
   while (to > from && /\s/.test(line[to - 1])) to--;
   return { from, to };
+}
+
+function downloadTextFile(filename: string, content: string, mimeType: string): void {
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const link = activeDocument.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.addClass("spreadsheet-table-hidden-download");
+  activeDocument.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
 
 function bodyRowIndexFromTablePosition(tableLocalRow: number): number {

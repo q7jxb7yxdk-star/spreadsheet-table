@@ -35,6 +35,10 @@
   display: none;
 }
 
+.spreadsheet-table-hidden-download {
+  display: none;
+}
+
 .spreadsheet-table-live-headers .spreadsheet-table-column-header-cell,
 .spreadsheet-table-live-headers .spreadsheet-table-row-number {
   background: var(--background-secondary);
