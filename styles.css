@@ -1,0 +1,83 @@
+.spreadsheet-table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 8px;
+}
+
+.spreadsheet-table-toolbar button {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.spreadsheet-table-sidebar {
+  padding: 8px;
+}
+
+.spreadsheet-table-sidebar h3 {
+  margin: 0 0 8px;
+}
+
+.spreadsheet-table-result {
+  font-variant-numeric: tabular-nums;
+}
+
+.spreadsheet-table-error {
+  color: var(--text-error);
+}
+
+.spreadsheet-table-source-hidden {
+  display: none;
+}
+
+.spreadsheet-table-live-headers .spreadsheet-table-column-header-cell,
+.spreadsheet-table-live-headers .spreadsheet-table-row-number {
+  background: var(--background-secondary);
+  color: var(--text-muted);
+  font-size: 0.8em;
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--font-normal);
+  text-align: center;
+  user-select: none;
+}
+
+.spreadsheet-table-live-headers .spreadsheet-table-row-number {
+  text-align: right;
+}
+
+.spreadsheet-table-live-headers tr:nth-child(odd) > .spreadsheet-table-row-number {
+  background: var(--background-secondary);
+}
+
+.spreadsheet-table-live-headers tr:nth-child(even) > .spreadsheet-table-row-number {
+  background: var(--background-modifier-hover);
+}
+
+.spreadsheet-table-live-headers .spreadsheet-table-selected-cell {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: -2px;
+}
+
+.spreadsheet-table-label {
+  color: var(--text-muted);
+  font-size: 0.75em;
+  margin-right: 4px;
+  user-select: none;
+}
+
+.spreadsheet-table-highlight {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: -2px;
+}
+
+@media (max-width: 480px) {
+  .spreadsheet-table-toolbar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(34px, 1fr));
+  }
+}
