@@ -52,7 +52,7 @@ const ACTIONS: ToolbarAction[] = [
     label: "Help",
     scope: "none",
     run: () => {
-      window.open("https://github.com/q7jxb7yxdk-star/spreadsheet-table/blob/main/README.md");
+      activeWindow.open("https://github.com/q7jxb7yxdk-star/spreadsheet-table/blob/main/README.md");
     }
   }
 ];

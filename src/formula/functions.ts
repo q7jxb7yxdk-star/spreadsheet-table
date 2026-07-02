@@ -30,17 +30,17 @@ export function applyBinary(operator: string, left: FormulaValue, right: Formula
   }
 
   const currency = unifyCurrency([left, right]);
-  if (currency === "mixed") return errorValue("#CURRENCY!");
+  if (currency.status === "mixed") return errorValue("#CURRENCY!");
 
   switch (operator) {
     case "+":
-      return numberValue(left.value + right.value, currency);
+      return numberValue(left.value + right.value, currency.currency);
     case "-":
-      return numberValue(left.value - right.value, currency);
+      return numberValue(left.value - right.value, currency.currency);
     case "*":
-      return numberValue(left.value * right.value, currency);
+      return numberValue(left.value * right.value, currency.currency);
     case "/":
-      return right.value === 0 ? errorValue("#DIV/0!") : numberValue(left.value / right.value, currency);
+      return right.value === 0 ? errorValue("#DIV/0!") : numberValue(left.value / right.value, currency.currency);
     default:
       return errorValue("#VALUE!");
   }
@@ -49,16 +49,16 @@ export function applyBinary(operator: string, left: FormulaValue, right: Formula
 function sumFunction(args: FormulaValue[]): FormulaValue {
   const numbers = args.filter((arg) => arg.type === "number" && typeof arg.value === "number");
   const currency = unifyCurrency(numbers);
-  if (currency === "mixed") return errorValue("#CURRENCY!");
-  return numberValue(numbers.reduce((sum, value) => sum + Number(value.value), 0), currency);
+  if (currency.status === "mixed") return errorValue("#CURRENCY!");
+  return numberValue(numbers.reduce((sum, value) => sum + Number(value.value), 0), currency.currency);
 }
 
 function averageFunction(args: FormulaValue[]): FormulaValue {
   const numbers = args.filter((arg) => arg.type === "number" && typeof arg.value === "number");
   const currency = unifyCurrency(numbers);
-  if (currency === "mixed") return errorValue("#CURRENCY!");
+  if (currency.status === "mixed") return errorValue("#CURRENCY!");
   if (numbers.length === 0) return blankValue();
-  return numberValue(numbers.reduce((sum, value) => sum + Number(value.value), 0) / numbers.length, currency);
+  return numberValue(numbers.reduce((sum, value) => sum + Number(value.value), 0) / numbers.length, currency.currency);
 }
 
 function convertFunction(args: FormulaValue[]): FormulaValue {

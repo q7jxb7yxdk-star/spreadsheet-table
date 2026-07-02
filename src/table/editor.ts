@@ -1,11 +1,11 @@
-import { MarkdownView, Notice, type Editor } from "obsidian";
+import { MarkdownView, Notice, type App, type Editor } from "obsidian";
 import type { Alignment, MarkdownTable } from "../types";
 import { normalizeFormulaText } from "../formula/parser";
 import { tableToCsv } from "./csv";
 import { addColumn, deleteColumn, deleteRow, formatTable, insertRowAt, moveColumn, moveRow, setAlignment, sortByColumn } from "./format";
 import { findTableAtLine, getCellPositionFromLine } from "./parser";
 
-export function getActiveMarkdownView(app: { workspace: { getActiveViewOfType<T>(type: new (...args: any[]) => T): T | null } }): MarkdownView | null {
+export function getActiveMarkdownView(app: App): MarkdownView | null {
   return app.workspace.getActiveViewOfType(MarkdownView);
 }
 

@@ -43,7 +43,7 @@ class FormulaWidget extends WidgetType {
   }
 
   toDOM(): HTMLElement {
-    const span = document.createElement("span");
+    const span = activeDocument.createElement("span");
     span.className = this.isError ? "spreadsheet-table-error" : "spreadsheet-table-result";
     span.appendText(this.display);
     return span;
@@ -150,35 +150,35 @@ export function registerLivePreviewTableHeaders(plugin: Plugin, getSettings: () 
   const schedule = () => {
     if (scheduled) return;
     scheduled = true;
-    window.requestAnimationFrame(() => {
+    activeWindow.requestAnimationFrame(() => {
       scheduled = false;
       syncLivePreviewTableHeaders(getSettings());
     });
   };
 
   const observer = new MutationObserver(schedule);
-  observer.observe(document.body, {
+  observer.observe(activeDocument.body, {
     childList: true,
     subtree: true
   });
 
-  plugin.registerDomEvent(document, "click", (event) => {
+  plugin.registerDomEvent(activeDocument, "click", (event) => {
     selectLivePreviewTableCell(event);
   });
 
   plugin.register(() => observer.disconnect());
-  plugin.registerInterval(window.setInterval(schedule, 1500));
+  plugin.registerInterval(activeWindow.setInterval(schedule, 1500));
   schedule();
 }
 
 function syncLivePreviewTableHeaders(settings: SpreadsheetTableSettings): void {
-  document.querySelectorAll<HTMLTableElement>(".spreadsheet-table-live-headers").forEach((table) => {
+  activeDocument.querySelectorAll<HTMLTableElement>(".spreadsheet-table-live-headers").forEach((table) => {
     if (!settings.showHeadersInLivePreview || !isLivePreviewTable(table)) removeTableHeaders(table);
   });
 
   if (!settings.showHeadersInLivePreview) return;
 
-  document.querySelectorAll<HTMLTableElement>(".markdown-source-view.mod-cm6.is-live-preview table, .markdown-source-view.is-live-preview table").forEach((table) => {
+  activeDocument.querySelectorAll<HTMLTableElement>(".markdown-source-view.mod-cm6.is-live-preview table, .markdown-source-view.is-live-preview table").forEach((table) => {
     if (!isLivePreviewTable(table)) return;
     applyTableHeaders(table);
   });
@@ -209,7 +209,7 @@ function ensureColumnHeaderRow(table: HTMLTableElement, columnCount: number): vo
   const thead = table.tHead ?? table.createTHead();
   let row = thead.querySelector<HTMLTableRowElement>("tr.spreadsheet-table-column-header-row");
   if (!row) {
-    row = document.createElement("tr");
+    row = table.doc.createElement("tr");
     row.addClass("spreadsheet-table-column-header-row");
     thead.insertBefore(row, thead.firstChild);
   }
@@ -224,7 +224,7 @@ function ensureColumnHeaderRow(table: HTMLTableElement, columnCount: number): vo
 function ensureRowNumber(row: HTMLTableRowElement, rowNumber: number): void {
   let cell = row.querySelector<HTMLTableCellElement>(":scope > .spreadsheet-table-row-number");
   if (!cell) {
-    cell = document.createElement("th");
+    cell = row.doc.createElement("th");
     cell.addClass("spreadsheet-table-row-number");
     row.insertBefore(cell, row.firstChild);
   }
@@ -294,11 +294,11 @@ function findMarkdownTablesInText(text: string): MarkdownTable[] {
 }
 
 function clearSelectedLivePreviewCells(): void {
-  document.querySelectorAll(".spreadsheet-table-selected-cell").forEach((cell) => cell.removeClass("spreadsheet-table-selected-cell"));
+  activeDocument.querySelectorAll(".spreadsheet-table-selected-cell").forEach((cell) => cell.removeClass("spreadsheet-table-selected-cell"));
 }
 
 function createHeaderCell(text: string): HTMLTableCellElement {
-  const cell = document.createElement("th");
+  const cell = activeDocument.createElement("th");
   cell.addClass("spreadsheet-table-column-header-cell");
   cell.textContent = text;
   return cell;

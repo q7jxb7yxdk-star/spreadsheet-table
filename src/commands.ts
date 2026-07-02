@@ -48,9 +48,9 @@ export function registerSpreadsheetCommands(plugin: SpreadsheetTablePlugin): voi
 
   plugin.addCommand({
     id: "open-help",
-    name: "Open Spreadsheet Table help",
+    name: "Open help",
     callback: () => {
-      window.open("https://github.com/q7jxb7yxdk-star/spreadsheet-table/blob/main/README.md");
+      activeWindow.open("https://github.com/q7jxb7yxdk-star/spreadsheet-table/blob/main/README.md");
     }
   });
 }

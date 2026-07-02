@@ -25,7 +25,7 @@ export default class SpreadsheetTablePlugin extends Plugin {
     this.registerEditorExtension(createLivePreviewExtension(() => this.settings));
     registerLivePreviewTableHeaders(this, () => this.settings);
     this.registerMarkdownPostProcessor((el, ctx) => renderReadingMode(el, ctx, this.settings));
-    this.registerDomEvent(document, "keydown", (event) => this.handleTableNavigation(event));
+    this.registerDomEvent(activeDocument, "keydown", (event) => this.handleTableNavigation(event));
   }
 
   async loadSettings(): Promise<void> {
@@ -43,14 +43,14 @@ export default class SpreadsheetTablePlugin extends Plugin {
   async activateToolbar(): Promise<void> {
     const existing = this.app.workspace.getLeavesOfType(SPREADSHEET_TOOLBAR_VIEW)[0];
     if (existing) {
-      this.app.workspace.revealLeaf(existing);
+      this.app.workspace.setActiveLeaf(existing, { focus: true });
       return;
     }
 
     const leaf = this.app.workspace.getRightLeaf(false);
     if (!leaf) return;
     await leaf.setViewState({ type: SPREADSHEET_TOOLBAR_VIEW, active: true });
-    this.app.workspace.revealLeaf(leaf);
+    this.app.workspace.setActiveLeaf(leaf, { focus: true });
   }
 
   private handleTableNavigation(event: KeyboardEvent): void {

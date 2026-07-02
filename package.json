@@ -1,6 +1,6 @@
 {
   "name": "spreadsheet-table",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Spreadsheet-style Markdown tables for Obsidian.",
   "main": "main.js",
   "scripts": {
@@ -22,7 +22,6 @@
     "@codemirror/view": "6.38.6",
     "@eslint/js": "^9.30.0",
     "@types/node": "^22.15.34",
-    "builtin-modules": "^5.0.0",
     "esbuild": "^0.25.5",
     "eslint": "^9.30.0",
     "obsidian": "^1.8.7",

@@ -1,7 +1,7 @@
 {
   "id": "spreadsheet-table",
   "name": "Spreadsheet Table",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "1.5.0",
   "description": "Spreadsheet-style editing, formulas, and rendering for Markdown tables.",
   "author": "Sunny Yu",

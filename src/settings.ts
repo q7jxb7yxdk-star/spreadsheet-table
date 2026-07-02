@@ -10,7 +10,6 @@ export class SpreadsheetTableSettingTab extends PluginSettingTab {
   display(): void {
     const { containerEl } = this;
     containerEl.empty();
-    new Setting(containerEl).setName("Spreadsheet Table").setHeading();
 
     new Setting(containerEl)
       .setName("Show column letters and row numbers in Live Preview")

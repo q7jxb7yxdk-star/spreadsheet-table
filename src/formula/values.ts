@@ -2,6 +2,8 @@ import type { FormulaValue, SpreadsheetTableSettings } from "../types";
 
 const CURRENCIES = ["US$", "HK$", "CA$", "AU$", "NZ$", "SG$", "NT$", "MX$", "JPY", "CNY", "RMB", "C$", "A$", "$", "¥", "￥"];
 
+export type CurrencyResolution = { status: "mixed" } | { status: "single"; currency?: string };
+
 export function blankValue(): FormulaValue {
   return { type: "blank", value: null };
 }
@@ -89,10 +91,10 @@ export function stripTime(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
-export function unifyCurrency(values: FormulaValue[]): string | undefined | "mixed" {
+export function unifyCurrency(values: FormulaValue[]): CurrencyResolution {
   const currencies = new Set(values.filter((value) => value.type === "number" && value.currency).map((value) => value.currency));
-  if (currencies.size > 1) return "mixed";
-  return currencies.values().next().value;
+  if (currencies.size > 1) return { status: "mixed" };
+  return { status: "single", currency: currencies.values().next().value };
 }
 
 function extractCurrency(text: string): string | undefined {

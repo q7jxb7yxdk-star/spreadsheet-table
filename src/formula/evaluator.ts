@@ -153,8 +153,8 @@ function aggregateValues(values: FormulaValue[]): FormulaValue {
   if (values.some((value) => value.type === "error")) return values.find((value) => value.type === "error") ?? errorValue("#ERROR!");
   const numbers = values.filter((value) => value.type === "number" && typeof value.value === "number");
   const currency = unifyCurrency(numbers);
-  if (currency === "mixed") return errorValue("#CURRENCY!");
-  return numberValue(numbers.reduce((sum, value) => sum + Number(value.value), 0), currency);
+  if (currency.status === "mixed") return errorValue("#CURRENCY!");
+  return numberValue(numbers.reduce((sum, value) => sum + Number(value.value), 0), currency.currency);
 }
 
 function getBody(table: MarkdownTable): string[][] {
