@@ -55,7 +55,21 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          cat > release-notes.md <<EOF
+          Release $GITHUB_REF_NAME
+
+          Changes:
+          - Built release assets with GitHub Actions.
+          - Generated artifact attestations for release assets.
+          - Uploaded Obsidian plugin assets for installation.
+
+          Release assets:
+          - main.js
+          - manifest.json
+          - styles.css
+          EOF
+
           gh release create "$GITHUB_REF_NAME" \
             main.js manifest.json styles.css \
             --title "Spreadsheet Table $GITHUB_REF_NAME" \
-            --notes "Release $GITHUB_REF_NAME"
+            --notes-file release-notes.md
