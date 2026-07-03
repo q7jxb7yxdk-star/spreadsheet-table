@@ -150,7 +150,7 @@ export function registerLivePreviewTableHeaders(plugin: Plugin, getSettings: () 
   const schedule = () => {
     if (scheduled) return;
     scheduled = true;
-    activeWindow.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
       scheduled = false;
       syncLivePreviewTableHeaders(getSettings());
     });
@@ -167,7 +167,7 @@ export function registerLivePreviewTableHeaders(plugin: Plugin, getSettings: () 
   });
 
   plugin.register(() => observer.disconnect());
-  plugin.registerInterval(activeWindow.setInterval(schedule, 1500));
+  plugin.registerInterval(window.setInterval(schedule, 1500));
   schedule();
 }
 
