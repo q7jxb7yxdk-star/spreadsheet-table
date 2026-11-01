@@ -2,13 +2,43 @@ import type { MarkdownPostProcessorContext } from "obsidian";
 import type { MarkdownTable, SpreadsheetTableSettings } from "../types";
 import { evaluateTable } from "../formula/evaluator";
 import { cellKey } from "../formula/references";
+import { findTableAtLine, isFormulaText } from "../table/parser";
 
-export function renderReadingMode(el: HTMLElement, _ctx: MarkdownPostProcessorContext, settings: SpreadsheetTableSettings): void {
+export function renderReadingMode(el: HTMLElement, ctx: MarkdownPostProcessorContext, settings: SpreadsheetTableSettings): void {
   if (!settings.enableFormulaRenderingInReadingMode) return;
 
+  const sectionOffsets = new Map<string, number>();
   el.querySelectorAll("table").forEach((tableEl) => {
     const table = tableFromElement(tableEl);
     if (!table) return;
+
+    // Rendered text has already lost Markdown emphasis markers, including '*'
+    // operators. Only evaluate formulas recovered from the original source.
+    const section = ctx.getSectionInfo(tableEl);
+    if (!section) return;
+    const sectionKey = `${section.lineStart}:${section.lineEnd}`;
+    const offset = sectionOffsets.get(sectionKey) ?? 0;
+    sectionOffsets.set(sectionKey, offset + 1);
+    const sourceTables: MarkdownTable[] = [];
+    for (let line = section.lineStart; line <= section.lineEnd; line++) {
+      const sourceTable = findTableAtLine(section.text, line);
+      if (!sourceTable) continue;
+      sourceTables.push(sourceTable);
+      line = sourceTable.endLine;
+    }
+    const sourceTable = sourceTables[offset];
+    if (!sourceTable) return;
+    const sourceRows = [sourceTable.headers, ...sourceTable.rows];
+    const renderedRows = [table.headers, ...table.rows];
+    if (sourceRows.length !== renderedRows.length || sourceRows.some((row, index) => row.length !== renderedRows[index].length)) return;
+    renderedRows.forEach((row, rowIndex) => {
+      row.forEach((_cell, col) => {
+        const source = sourceRows[rowIndex][col];
+        // Preserve rendered text for ordinary cells (links, formatting, etc.).
+        // Replace every formula so references also use the intact expression.
+        row[col] = isFormulaText(source) ? source : isFormulaText(row[col]) ? "" : row[col];
+      });
+    });
     const evaluation = evaluateTable(table, settings);
 
     const rows = Array.from(tableEl.querySelectorAll("tr"));
