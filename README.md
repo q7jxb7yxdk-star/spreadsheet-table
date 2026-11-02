@@ -17,7 +17,7 @@ For implementation details, see [Technical Documentation](TECHNICAL_DOCUMENTATIO
 
 | Item | Repository evidence |
 | --- | --- |
-| Plugin version | `1.0.3` in `manifest.json` and `package.json` |
+| Plugin version | `1.0.4` in `manifest.json` and `package.json` |
 | Host | Obsidian `>=1.5.0`, as declared by `manifest.json` |
 | Platforms | `isDesktopOnly: false`; no OS-specific minimum versions are declared, and mobile runtime behavior is unverified |
 | Development runtime | CI uses Node.js 22; the root package declares no Node.js or npm version requirement |

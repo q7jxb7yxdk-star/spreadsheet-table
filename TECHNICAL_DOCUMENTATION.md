@@ -1,6 +1,6 @@
 # Technical Documentation
 
-This document describes the repository implementation of Spreadsheet Table `1.0.3`. Source and configuration are the authority; runtime compatibility and publication require separate evidence. See [README](README.md) for setup and usage.
+This document describes the repository implementation of Spreadsheet Table `1.0.4`. Source and configuration are the authority; runtime compatibility and publication require separate evidence. See [README](README.md) for setup and usage.
 
 ## 1. System overview and evidence
 
@@ -174,7 +174,7 @@ Third-party licenses remain separate from the project-wide MIT [LICENSE](LICENSE
 
 ## 8. Configuration and runtime modes
 
-`manifest.json` declares plugin ID `spreadsheet-table`, version `1.0.3`, minimum Obsidian `1.5.0` and `isDesktopOnly: false`. No minimum OS versions, entitlements, signing settings, schemes, certificates, environment examples or API secrets are configured. The manifest's compatibility claim has not been runtime-validated here.
+`manifest.json` declares plugin ID `spreadsheet-table`, version `1.0.4`, minimum Obsidian `1.5.0` and `isDesktopOnly: false`. No minimum OS versions, entitlements, signing settings, schemes, certificates, environment examples or API secrets are configured. The manifest's compatibility claim has not been runtime-validated here.
 
 | Setting | Default | Effect |
 | --- | --- | --- |
